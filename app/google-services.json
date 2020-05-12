@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "500555376177",
+    "firebase_url": "https://helloworld-9d86a.firebaseio.com",
+    "project_id": "helloworld-9d86a",
+    "storage_bucket": "helloworld-9d86a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500555376177:android:3602f7b63ab71c5fe59710",
+        "android_client_info": {
+          "package_name": "yogesh.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500555376177-ejudqhsqsgahv0bjqj4d2ggv7l0c1n63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAqGDC4QtI27a94cgbAzs4n5lxTODMWk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500555376177-ejudqhsqsgahv0bjqj4d2ggv7l0c1n63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
