@@ -64,6 +64,7 @@ import yogesh.com.ModelPost;
 import yogesh.com.PostsAdapter;
 import yogesh.com.R;
 import yogesh.com.RegisterUserActivity;
+import yogesh.com.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -800,7 +801,11 @@ public class ProfileFragment extends Fragment {
         if (id == R.id.logoutMenu) {
             mAuth.signOut();
             checkUserStatus();
+
+        } else if (id == R.id.settingsMenu) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

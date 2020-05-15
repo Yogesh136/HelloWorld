@@ -19,12 +19,13 @@
         android:id="@+id/bottom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:itemIconTint="@color/design_default_color_background"
-        app:itemTextColor="#FFFF"
-        android:background="@color/colorPrimary"
-        app:labelVisibilityMode="labeled"
+        app:itemTextColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:itemIconTint="@color/design_default_color_background"
+        android:foregroundTint="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

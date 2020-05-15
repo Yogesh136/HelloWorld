@@ -2,7 +2,7 @@ package yogesh.com;
 
 public class ModelPost {
 
-   private String pId, pTitle, pDescr, pLikes, pComments, pImage, pTime, uid, uEmail, uDp, uName;
+    private String pId, pTitle, pDescr, pLikes, pComments, pImage, pTime, uid, uEmail, uDp, uName;
 
     public ModelPost() {
     }

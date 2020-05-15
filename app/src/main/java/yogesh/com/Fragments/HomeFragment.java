@@ -39,6 +39,7 @@ import yogesh.com.ModelPost;
 import yogesh.com.PostsAdapter;
 import yogesh.com.R;
 import yogesh.com.RegisterUserActivity;
+import yogesh.com.SettingsActivity;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -133,7 +134,6 @@ public class HomeFragment extends Fragment {
                         mPostList.add(modelPost);
                     }
 
-
                     mPostsAdapter = new PostsAdapter(getActivity(), mPostList);
                     mRecyclerView.setAdapter(mPostsAdapter);
                 }
@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -213,7 +213,10 @@ public class HomeFragment extends Fragment {
             mAuth.signOut();
             checkUserStatus();
 
+        } else if (id == R.id.settingsMenu) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import yogesh.com.R;
 import yogesh.com.RegisterUserActivity;
+import yogesh.com.SettingsActivity;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -80,7 +81,10 @@ public class ListFragment extends Fragment {
             mAuth.signOut();
             checkUserStatus();
 
+        } else if (id == R.id.settingsMenu) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

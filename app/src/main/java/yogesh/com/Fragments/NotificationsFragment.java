@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,39 +20,53 @@ import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import yogesh.com.ModelNotifications;
+import yogesh.com.NotificationAdapter;
 import yogesh.com.R;
 import yogesh.com.RegisterUserActivity;
 import yogesh.com.SettingsActivity;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment {
-    private static final String TAG = "RegisterFragment";
+public class NotificationsFragment extends Fragment {
 
+    private RecyclerView notificationsRecycler;
     private FirebaseAuth mAuth;
+    private ArrayList<ModelNotifications> notificationsList;
+    private NotificationAdapter notificationAdapter;
 
-    public RegisterFragment() {
+
+    public NotificationsFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: Starts");
-        // Inflate the layout for this fragment
-        mAuth = FirebaseAuth.getInstance();
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
-        return view;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        notificationsRecycler = view.findViewById(R.id.notificationsRecyclerView);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        getAllNotifications();
+
+        return view;
     }
 
     private void checkUserStatus() {
-        Log.d(TAG, "checkUserStatus: Starts");
+
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -62,7 +77,6 @@ public class RegisterFragment extends Fragment {
             getActivity().finish();
         }
 
-        Log.d(TAG, "checkUserStatus: Ends");
     }
 
     @Override
@@ -93,5 +107,30 @@ public class RegisterFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getAllNotifications() {
+        notificationsList = new ArrayList<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(mAuth.getUid()).child("Notifications").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notificationsList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    ModelNotifications model = ds.getValue(ModelNotifications.class);
+
+                    notificationsList.add(model);
+                }
+                notificationAdapter = new NotificationAdapter(getActivity(), notificationsList);
+                notificationsRecycler.setAdapter(notificationAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }
