@@ -9,7 +9,6 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,11 +27,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import yogesh.com.ModelNotifications;
-import yogesh.com.NotificationAdapter;
+import yogesh.com.Models.ModelNotifications;
+import yogesh.com.Adapters.NotificationAdapter;
 import yogesh.com.R;
-import yogesh.com.RegisterUserActivity;
-import yogesh.com.SettingsActivity;
+import yogesh.com.Activity.RegisterUserActivity;
+import yogesh.com.Activity.SettingsActivity;
 
 
 /**

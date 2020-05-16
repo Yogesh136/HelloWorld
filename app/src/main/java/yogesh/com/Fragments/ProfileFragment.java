@@ -12,7 +12,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
@@ -41,11 +40,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PlayGamesAuthCredential;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,14 +57,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import yogesh.com.ModelPost;
-import yogesh.com.PostsAdapter;
+import yogesh.com.Models.ModelPost;
+import yogesh.com.Adapters.PostsAdapter;
 import yogesh.com.R;
-import yogesh.com.RegisterUserActivity;
-import yogesh.com.SettingsActivity;
+import yogesh.com.Activity.RegisterUserActivity;
+import yogesh.com.Activity.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 
@@ -413,7 +409,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void showNamePhoneUpdateDialog(final String key) {    //key parameter will either conatin name or phonenumber value
+    private void showNamePhoneUpdateDialog(final String key) {    //key parameter will either contain name or phonenumber value
         Log.d(TAG, "showNamePhoneUpdateDialog: Starts");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

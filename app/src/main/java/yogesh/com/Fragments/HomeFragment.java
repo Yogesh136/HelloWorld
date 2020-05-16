@@ -33,15 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import yogesh.com.AddPostActivity;
-import yogesh.com.MainActivity;
-import yogesh.com.ModelPost;
-import yogesh.com.PostsAdapter;
+import yogesh.com.Activity.AddPostActivity;
+import yogesh.com.Models.ModelPost;
+import yogesh.com.Adapters.PostsAdapter;
 import yogesh.com.R;
-import yogesh.com.RegisterUserActivity;
-import yogesh.com.SettingsActivity;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
+import yogesh.com.Activity.RegisterUserActivity;
+import yogesh.com.Activity.SettingsActivity;
 
 
 /**

@@ -1,10 +1,9 @@
-package yogesh.com;
+package yogesh.com.Adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import yogesh.com.Activity.PostDetailsActivity;
+import yogesh.com.Models.ModelNotifications;
+import yogesh.com.R;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.HolderNotification> {
 

@@ -1,15 +1,11 @@
-package yogesh.com;
+package yogesh.com.Adapters;
 
-import android.app.AppOpsManager;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.Telephony;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +44,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import yogesh.com.Activity.AddPostActivity;
+import yogesh.com.Activity.OthersProfileActivity;
+import yogesh.com.Activity.PostDetailsActivity;
+import yogesh.com.Models.ModelPost;
+import yogesh.com.R;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
@@ -93,7 +94,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
+//        calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
         String pTime = DateFormat.format("dd/mm/yyyy hh:mm aa", calendar).toString();
 
 

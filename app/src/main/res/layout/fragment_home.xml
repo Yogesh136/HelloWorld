@@ -17,7 +17,8 @@
         android:src="@drawable/post_add"
         app:borderWidth="0.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postsRecyclerView"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostDetailsActivity">
+    tools:context=".Activity.PostDetailsActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_above="@+id/commentsLayout"
@@ -55,7 +55,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Name"
-                                android:textColor="#000000"
+                                android:textColor="@color/colorBlack"
                                 android:textSize="20sp" />
                             <TextView
                                 android:id="@+id/postTimeTextView"
@@ -79,14 +79,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="#000000"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:text="Title"
                         android:autoLink="all"/>
                     <TextView
                         android:id="@+id/postDescriptionTextView"
                         android:text="The Description of the Post is"
-                        android:textColor="#000000"
+                        android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="all"/>
@@ -132,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center">
+
                         <Button
                             android:id="@+id/likeButton"
                             android:layout_width="wrap_content"
@@ -140,7 +141,8 @@
                             android:text="Like"
                             android:drawableLeft="@drawable/like_icon"
                             android:drawablePadding="5dp"
-                            android:background="@null"/>
+                            android:background="@null"
+                            android:drawableStart="@drawable/like_icon" />
 
                         <Button
                             android:id="@+id/shareButton"
@@ -150,7 +152,8 @@
                             android:text="Share"
                             android:drawableLeft="@drawable/share_icon"
                             android:drawablePadding="5dp"
-                            android:background="@null"/>
+                            android:background="@null"
+                            android:drawableStart="@drawable/share_icon" />
 
                     </LinearLayout>
 
@@ -166,7 +169,8 @@
                 android:drawablePadding="5dp"
                 android:textColor="#000000"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/comment_icon" />
             
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

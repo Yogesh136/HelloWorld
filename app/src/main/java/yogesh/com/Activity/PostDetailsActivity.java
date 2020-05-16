@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -49,6 +49,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import yogesh.com.Adapters.CommentsAdapter;
+import yogesh.com.Models.ModelComments;
+import yogesh.com.R;
 
 public class PostDetailsActivity extends AppCompatActivity {
 

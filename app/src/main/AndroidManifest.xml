@@ -7,17 +7,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".notifications.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".PostDetailsActivity" />
-        <activity android:name=".OthersProfileActivity" />
-        <activity android:name=".AddPostActivity">
+        <activity android:name=".Activity.SettingsActivity"></activity>
+        <activity android:name=".Activity.PostDetailsActivity" />
+        <activity android:name=".Activity.OthersProfileActivity" />
+        <activity android:name=".Activity.AddPostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -33,9 +33,9 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginUserActivity" />
-        <activity android:name=".RegisterUserActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.LoginUserActivity" />
+        <activity android:name=".Activity.RegisterUserActivity" />
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/container"
@@ -19,12 +19,11 @@
         android:id="@+id/bottom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:itemTextColor="#FFFFFF"
+        app:itemTextColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemIconTint="@color/design_default_color_background"
-        android:foregroundTint="@color/colorPrimaryDark"
+        app:itemIconTint="@color/colorWhite"
         android:background="@color/colorPrimary"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"/>

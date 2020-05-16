@@ -19,10 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import yogesh.com.R;
-import yogesh.com.RegisterUserActivity;
-import yogesh.com.SettingsActivity;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
+import yogesh.com.Activity.RegisterUserActivity;
+import yogesh.com.Activity.SettingsActivity;
 
 
 /**

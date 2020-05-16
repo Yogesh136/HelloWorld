@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.notifications;
 
 import android.app.Application;
 
