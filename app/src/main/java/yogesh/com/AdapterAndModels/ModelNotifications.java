@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.AdapterAndModels;
 
 public class ModelNotifications {
 

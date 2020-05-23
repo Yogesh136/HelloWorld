@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterFragment">
+    tools:context=".Fragments.RegisterFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,7 +69,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:text=" Add Image +"
-            android:layout_marginStart="16dp" />
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/colorWhite"
+            android:layout_marginStart="16dp"
+            android:padding="10dp"/>
 
         <ImageView
             android:id="@+id/capturedImageView"
@@ -90,15 +93,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp" />
 
-        <TextView
-            android:id="@+id/addressTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Complaint Address"
-            android:layout_below="@+id/locationSwitch"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp" />
+
 
         <TextView
             android:id="@+id/textView"
@@ -109,6 +104,19 @@
             android:layout_toRightOf="@+id/locationSwitch"
             android:layout_below="@+id/capturedImageView"
             android:layout_toEndOf="@+id/locationSwitch" />
+
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complaint Address"
+            android:layout_below="@+id/locationSwitch"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/complaintDescriptionEditText"

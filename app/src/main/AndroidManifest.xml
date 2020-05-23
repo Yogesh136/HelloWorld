@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="yogesh.com">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,11 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".PostDetailsActivity" />
-        <activity android:name=".OthersProfileActivity" />
-        <activity android:name=".AddPostActivity">
+        android:theme="@style/AppTheme"
+        tools:targetApi="m">
+        <activity android:name=".Activity.SettingsActivity"></activity>
+        <activity android:name=".Activity.PostDetailsActivity" />
+        <activity android:name=".Activity.OthersProfileActivity" />
+        <activity android:name=".Activity.AddPostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -35,9 +37,9 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginUserActivity" />
-        <activity android:name=".RegisterUserActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.LoginUserActivity" />
+        <activity android:name=".Activity.RegisterUserActivity" />
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,7 +65,7 @@
             </intent-filter>
         </service>
         
-        <service android:name=".FetchAddressIntentService" />
+        <service android:name=".Fragments.FetchAddressIntentService" />
 
 
     </application>

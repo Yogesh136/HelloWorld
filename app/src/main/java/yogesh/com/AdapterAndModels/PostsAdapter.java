@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.AdapterAndModels;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,6 +44,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import yogesh.com.Activity.AddPostActivity;
+import yogesh.com.Activity.OthersProfileActivity;
+import yogesh.com.Activity.PostDetailsActivity;
+import yogesh.com.R;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 

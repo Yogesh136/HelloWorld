@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.Fragments;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import yogesh.com.Constants;
+import yogesh.com.Fragments.Constants;
 
 public class FetchAddressIntentService extends IntentService {
 

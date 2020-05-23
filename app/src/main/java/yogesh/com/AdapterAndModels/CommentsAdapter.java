@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.AdapterAndModels;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,6 +24,8 @@ import com.squareup.picasso.Picasso;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import yogesh.com.R;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyHolder> {
 

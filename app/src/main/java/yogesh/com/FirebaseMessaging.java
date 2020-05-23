@@ -22,8 +22,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
-import yogesh.com.PostDetailsActivity;
-import yogesh.com.R;
+import yogesh.com.Activity.PostDetailsActivity;
 
 public class FirebaseMessaging extends FirebaseMessagingService {
 

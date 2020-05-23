@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -64,11 +64,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
+import yogesh.com.Activity.RegisterUserActivity;
+import yogesh.com.Activity.SettingsActivity;
 import yogesh.com.Constants;
-import yogesh.com.FetchAddressIntentService;
 import yogesh.com.R;
-import yogesh.com.RegisterUserActivity;
-import yogesh.com.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -92,7 +91,7 @@ public class RegisterFragment extends Fragment {
     private String names, email, uid, dp;
 
 
-    private TextView complaintNumber, complaintaddress;
+    private TextView complaintNumber, complaintAddress;
     private EditText fullname, mobileNumber, description;
     private ImageView capturedImage;
     private Button addImageButton, registerButton;
@@ -152,7 +151,7 @@ public class RegisterFragment extends Fragment {
         addImageButton = view.findViewById(R.id.cameraButton);
         registerButton = view.findViewById(R.id.registerbutton);
         locationSwitch = view.findViewById(R.id.locationSwitch);
-        complaintaddress = view.findViewById(R.id.addressTextView);
+        complaintAddress = view.findViewById(R.id.addressTextView);
 
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
@@ -381,7 +380,7 @@ public class RegisterFragment extends Fragment {
         Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-//        startService(intent);
+        startService(intent);
 
     }
 
@@ -404,17 +403,20 @@ public class RegisterFragment extends Fragment {
     }
 
     private class AddressResultReceiver extends ResultReceiver {
-
         AddressResultReceiver(Handler handler) {
             super(handler);
+
         }
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == Constants.SUCCESS_RESULT) {
-                complaintaddress.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                complaintAddress.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                complaintAddress.setVisibility(View.VISIBLE);
 
+            }else{
+                Toast.makeText(getActivity(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }
         }
     }

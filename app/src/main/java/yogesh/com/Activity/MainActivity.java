@@ -1,4 +1,4 @@
-package yogesh.com;
+package yogesh.com.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,13 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import yogesh.com.Fragments.HomeFragment;
+import yogesh.com.Fragments.ListFragment;
+import yogesh.com.Fragments.NotificationsFragment;
+import yogesh.com.Fragments.ProfileFragment;
+import yogesh.com.R;
+import yogesh.com.Fragments.RegisterFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
