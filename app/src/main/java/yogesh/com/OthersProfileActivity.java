@@ -1,4 +1,4 @@
-package yogesh.com.Activity;
+package yogesh.com;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -30,10 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import yogesh.com.Models.ModelPost;
-import yogesh.com.Adapters.PostsAdapter;
-import yogesh.com.R;
 
 public class OthersProfileActivity extends AppCompatActivity {
     private static final String TAG = "OthersProfileActivity";

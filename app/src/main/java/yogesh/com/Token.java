@@ -1,4 +1,4 @@
-package yogesh.com.notifications;
+package yogesh.com;
 
 public class Token {
 

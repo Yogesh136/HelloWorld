@@ -1,4 +1,4 @@
-package yogesh.com.Fragments;
+package yogesh.com;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,12 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-import yogesh.com.Models.ModelNotifications;
-import yogesh.com.Adapters.NotificationAdapter;
-import yogesh.com.R;
-import yogesh.com.Activity.RegisterUserActivity;
-import yogesh.com.Activity.SettingsActivity;
 
 
 /**

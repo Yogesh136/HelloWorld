@@ -1,4 +1,4 @@
-package yogesh.com.Adapters;
+package yogesh.com;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,10 +28,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import yogesh.com.Activity.PostDetailsActivity;
-import yogesh.com.Models.ModelNotifications;
-import yogesh.com.R;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.HolderNotification> {
 

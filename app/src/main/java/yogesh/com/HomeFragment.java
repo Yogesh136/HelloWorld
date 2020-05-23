@@ -1,4 +1,4 @@
-package yogesh.com.Fragments;
+package yogesh.com;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,13 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import yogesh.com.Activity.AddPostActivity;
-import yogesh.com.Models.ModelPost;
-import yogesh.com.Adapters.PostsAdapter;
-import yogesh.com.R;
-import yogesh.com.Activity.RegisterUserActivity;
-import yogesh.com.Activity.SettingsActivity;
 
 
 /**

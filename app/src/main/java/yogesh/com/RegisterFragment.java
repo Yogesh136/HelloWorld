@@ -1,14 +1,15 @@
-package yogesh.com.Fragments;
+package yogesh.com;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -19,6 +20,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.ResultReceiver;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -37,6 +42,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -55,10 +64,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-import yogesh.com.Activity.AddPostActivity;
+import yogesh.com.Constants;
+import yogesh.com.FetchAddressIntentService;
 import yogesh.com.R;
-import yogesh.com.Activity.RegisterUserActivity;
-import yogesh.com.Activity.SettingsActivity;
+import yogesh.com.RegisterUserActivity;
+import yogesh.com.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -72,22 +82,24 @@ public class RegisterFragment extends Fragment {
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 200;
     private static final int IMAGE_PICK_CAMERA_CODE = 300;
+    private static final int LOCATION_REQUEST_CODE = 400;
 
     private String[] cameraPermissions;
     private String[] storagePermissions;
-
+    private String[] locationPermissions;
     private FirebaseAuth mAuth;
     private DatabaseReference userDatabaseRef;
     private String names, email, uid, dp;
 
 
-    private TextView complaintNumber;
+    private TextView complaintNumber, complaintaddress;
     private EditText fullname, mobileNumber, description;
     private ImageView capturedImage;
     private Button addImageButton, registerButton;
     private Switch locationSwitch;
     private Spinner departmentSpinner;
     private ProgressDialog mProgressDialog;
+    private ResultReceiver resultReceiver;
 
 
     private Uri image_uri = null;
@@ -104,9 +116,11 @@ public class RegisterFragment extends Fragment {
 
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
         mProgressDialog = new ProgressDialog(getActivity());
 
+        resultReceiver = new AddressResultReceiver(new Handler());
 
         mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_register, container, false);
@@ -138,6 +152,7 @@ public class RegisterFragment extends Fragment {
         addImageButton = view.findViewById(R.id.cameraButton);
         registerButton = view.findViewById(R.id.registerbutton);
         locationSwitch = view.findViewById(R.id.locationSwitch);
+        complaintaddress = view.findViewById(R.id.addressTextView);
 
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
@@ -152,14 +167,29 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!checkLocationPermission()) {
+                    requestLocationPermission();
+
+                } else {
+                    getUserLocation();
+
+                }
+
+            }
+        });
+
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = fullname.getText().toString().trim();
-                String number = mobileNumber.getText().toString().trim();
-                String desc = description.getText().toString().trim();
-                String compNumber = complaintNumber.getText().toString().trim();
+                final String name = fullname.getText().toString().trim();
+                final String number = mobileNumber.getText().toString().trim();
+                final String desc = description.getText().toString().trim();
+                final String compNumber = complaintNumber.getText().toString().trim();
+
 
                 if (TextUtils.isEmpty(name)) {
                     Toast.makeText(getActivity(), "Name is Required", Toast.LENGTH_SHORT).show();
@@ -171,13 +201,31 @@ public class RegisterFragment extends Fragment {
                     return;
 
                 }
+                if (image_uri != null && locationSwitch.isChecked()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+                    builder.setTitle("Register Complaint");
+                    builder.setMessage("The above details provided by me is correct and can be used for further contacting regaerding the issue");
+                    builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            uploadData(name, number, desc, compNumber, String.valueOf(image_uri));
+                        }
+                    });
 
-                if (image_uri != null) {
-                    uploadData(name, number, desc, compNumber, String.valueOf(image_uri));
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.create().show();
 
                 } else {
-                    Toast.makeText(getActivity(), "Image is Necessary", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Image and Location is Necessary...", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
         });
 
@@ -185,8 +233,9 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
+
     private void uploadData(final String name, final String number, final String desc, final String compNumber, String valueOf) {
-        mProgressDialog.setMessage("Registering Complaint");
+        mProgressDialog.setMessage("Registering Complaint...");
         mProgressDialog.show();
 
         final String timestamp = String.valueOf(System.currentTimeMillis());
@@ -205,7 +254,7 @@ public class RegisterFragment extends Fragment {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isSuccessful()) ;
 
-                        String downlaodUri = uriTask.getResult().toString();
+                        String downloadUri = uriTask.getResult().toString();
 
                         if (uriTask.isSuccessful()) {
                             HashMap<Object, String> hashMap = new HashMap<>();
@@ -217,6 +266,7 @@ public class RegisterFragment extends Fragment {
                             hashMap.put("compNum", compNumber);
                             hashMap.put("cName", name);
                             hashMap.put("cNumber", number);
+                            hashMap.put("cImage", downloadUri);
                             hashMap.put("cDesc", desc);
                             hashMap.put("cTime", timestamp);
 
@@ -291,6 +341,51 @@ public class RegisterFragment extends Fragment {
         ActivityCompat.requestPermissions(getActivity(), cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(getActivity(), locationPermissions, LOCATION_REQUEST_CODE);
+    }
+
+    private boolean checkLocationPermission() {
+        boolean result = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
+    private void getUserLocation() {
+        final LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setInterval(3000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
+                if (locationResult != null && locationResult.getLocations().size() > 0) {
+                    int latestLocationIndex = locationResult.getLocations().size() - 1;
+                    double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                    double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+
+                    Location location = new Location("providerNA");
+                    location.setLatitude(latitude);
+                    location.setLongitude(longitude);
+                    fetchAddressFromLatLong(location);
+                }
+            }
+        }, Looper.getMainLooper());
+    }
+
+    private void fetchAddressFromLatLong(Location location) {
+        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+//        startService(intent);
+
+    }
+
+
     private void checkUserStatus() {
         Log.d(TAG, "checkUserStatus: Starts");
 
@@ -299,13 +394,29 @@ public class RegisterFragment extends Fragment {
             email = currentUser.getEmail();
             uid = currentUser.getUid();
 
-
         } else {
             startActivity(new Intent(getActivity(), RegisterUserActivity.class));  //change this to NewUserActivity
             getActivity().finish();
+
         }
 
         Log.d(TAG, "checkUserStatus: Ends");
+    }
+
+    private class AddressResultReceiver extends ResultReceiver {
+
+        AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                complaintaddress.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+
+            }
+        }
     }
 
 
@@ -362,9 +473,29 @@ public class RegisterFragment extends Fragment {
 
             }
             break;
-        }
 
+            case LOCATION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    if (locationAccepted) {
+                        getUserLocation();
+
+                    } else {
+                        Toast.makeText(getActivity(), "Location Permission are Required", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } else {
+
+                }
+
+            }
+            break;
+
+        }
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

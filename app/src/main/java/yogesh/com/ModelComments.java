@@ -1,4 +1,4 @@
-package yogesh.com.Models;
+package yogesh.com;
 
 public class ModelComments {
 

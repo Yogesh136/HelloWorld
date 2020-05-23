@@ -1,4 +1,4 @@
-package yogesh.com.Activity;
+package yogesh.com;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import yogesh.com.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

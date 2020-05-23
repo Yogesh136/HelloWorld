@@ -1,4 +1,4 @@
-package yogesh.com.notifications;
+package yogesh.com;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,7 +22,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
-import yogesh.com.Activity.PostDetailsActivity;
+import yogesh.com.PostDetailsActivity;
 import yogesh.com.R;
 
 public class FirebaseMessaging extends FirebaseMessagingService {

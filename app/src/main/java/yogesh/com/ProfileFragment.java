@@ -1,4 +1,4 @@
-package yogesh.com.Fragments;
+package yogesh.com;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -56,12 +56,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import yogesh.com.Models.ModelPost;
-import yogesh.com.Adapters.PostsAdapter;
-import yogesh.com.R;
-import yogesh.com.Activity.RegisterUserActivity;
-import yogesh.com.Activity.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;

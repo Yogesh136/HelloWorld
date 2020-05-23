@@ -1,4 +1,4 @@
-package yogesh.com.Activity;
+package yogesh.com;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -37,8 +37,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-
-import yogesh.com.R;
 
 public class LoginUserActivity extends AppCompatActivity {
     private static final String TAG = "LoginUserActivity";

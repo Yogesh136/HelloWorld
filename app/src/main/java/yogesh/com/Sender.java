@@ -1,4 +1,6 @@
-package yogesh.com.notifications;
+package yogesh.com;
+
+import yogesh.com.Data;
 
 public class Sender {
 

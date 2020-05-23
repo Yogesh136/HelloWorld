@@ -1,4 +1,4 @@
-package yogesh.com.Activity;
+package yogesh.com;
 
 public class GovtDepartments {
 

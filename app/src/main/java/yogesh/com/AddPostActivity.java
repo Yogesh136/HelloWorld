@@ -1,4 +1,4 @@
-package yogesh.com.Activity;
+package yogesh.com;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,8 +56,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import yogesh.com.R;
 
 public class AddPostActivity extends AppCompatActivity {
 
