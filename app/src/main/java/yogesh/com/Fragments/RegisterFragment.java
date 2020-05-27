@@ -4,12 +4,17 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -63,10 +68,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import yogesh.com.Activity.RegisterUserActivity;
 import yogesh.com.Activity.SettingsActivity;
-import yogesh.com.Constants;
 import yogesh.com.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -75,7 +81,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements LocationListener {
     private static final String TAG = "RegisterFragment";
 
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -90,18 +96,22 @@ public class RegisterFragment extends Fragment {
     private DatabaseReference userDatabaseRef;
     private String names, email, uid, dp;
 
+    private LocationManager locationManager;
 
-    private TextView complaintNumber, complaintAddress;
-    private EditText fullname, mobileNumber, description;
+    private double latitude = 0.0, longitude= 0.0;
+
+
+    private TextView complaintNumber;
+    private EditText fullname, mobileNumber, description, addressLocation;
     private ImageView capturedImage;
     private Button addImageButton, registerButton;
     private Switch locationSwitch;
     private Spinner departmentSpinner;
     private ProgressDialog mProgressDialog;
-    private ResultReceiver resultReceiver;
-
 
     private Uri image_uri = null;
+
+
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -118,8 +128,6 @@ public class RegisterFragment extends Fragment {
         locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
         mProgressDialog = new ProgressDialog(getActivity());
-
-        resultReceiver = new AddressResultReceiver(new Handler());
 
         mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_register, container, false);
@@ -151,17 +159,17 @@ public class RegisterFragment extends Fragment {
         addImageButton = view.findViewById(R.id.cameraButton);
         registerButton = view.findViewById(R.id.registerbutton);
         locationSwitch = view.findViewById(R.id.locationSwitch);
-        complaintAddress = view.findViewById(R.id.addressTextView);
+        addressLocation = view.findViewById(R.id.addressEditText);
 
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkCameraPermission()) {
-                    requestCameraPermission();
+                if (checkCameraPermission()) {
+                    pickFromCamera();
 
                 } else {
-                    pickFromCamera();
+                    requestCameraPermission();
                 }
             }
         });
@@ -169,45 +177,48 @@ public class RegisterFragment extends Fragment {
         locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!checkLocationPermission()) {
-                    requestLocationPermission();
+                if (checkLocationPermission()) {
+                    getUserLocation();
 
                 } else {
-                    getUserLocation();
+                    requestLocationPermission();
 
                 }
 
             }
         });
 
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String name = fullname.getText().toString().trim();
                 final String number = mobileNumber.getText().toString().trim();
+                final String address = addressLocation.getText().toString().trim();
                 final String desc = description.getText().toString().trim();
-                final String compNumber = complaintNumber.getText().toString().trim();
-
 
                 if (TextUtils.isEmpty(name)) {
-                    Toast.makeText(getActivity(), "Name is Required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Name is Required...", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
                 if (TextUtils.isEmpty(number)) {
-                    Toast.makeText(getActivity(), "Contact Number is Required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Phone Number is Required...", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
+                if(latitude==0.0 || longitude==0.0){
+                    Toast.makeText(getActivity(), "Please enable GPS to detect Location...", Toast.LENGTH_SHORT).show();
+                }
+
+
                 if (image_uri != null && locationSwitch.isChecked()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
                     builder.setTitle("Register Complaint");
-                    builder.setMessage("The above details provided by me is correct and can be used for further contacting regaerding the issue");
+                    builder.setMessage("The above details provided by me is correct and can be used for further contacting regarding the issue...");
                     builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            uploadData(name, number, desc, compNumber, String.valueOf(image_uri));
+                            uploadData(name, number, desc, address, String.valueOf(image_uri));
                         }
                     });
 
@@ -228,12 +239,11 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
 
-    private void uploadData(final String name, final String number, final String desc, final String compNumber, String valueOf) {
+    private void uploadData(final String name, final String number, final String desc,final String address, String valueOf) {
         mProgressDialog.setMessage("Registering Complaint...");
         mProgressDialog.show();
 
@@ -258,16 +268,19 @@ public class RegisterFragment extends Fragment {
                         if (uriTask.isSuccessful()) {
                             HashMap<Object, String> hashMap = new HashMap<>();
                             hashMap.put("uid", uid);
-                            hashMap.put("uName", names);
-                            hashMap.put("uEmail", email);
-                            hashMap.put("uDp", dp);
-                            hashMap.put("cId", timestamp);
-                            hashMap.put("compNum", compNumber);
-                            hashMap.put("cName", name);
-                            hashMap.put("cNumber", number);
-                            hashMap.put("cImage", downloadUri);
-                            hashMap.put("cDesc", desc);
-                            hashMap.put("cTime", timestamp);
+                            hashMap.put("userName", names);
+                            hashMap.put("userEmail", email);
+                            hashMap.put("userDp", dp);
+                            hashMap.put("complaintId", timestamp);
+                            hashMap.put("cFullName", name);
+                            hashMap.put("cPhoneNumber", number);
+                            hashMap.put("complaintImage", downloadUri);
+                            hashMap.put("complaintDesc", desc);
+                            hashMap.put("compliantTime", timestamp);
+                            hashMap.put("latitude", ""+latitude);
+                            hashMap.put("longitude", ""+longitude);
+                            hashMap.put("ComplaintAddress",""+address);
+
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Complaints");
                             ref.child(timestamp).setValue(hashMap)
@@ -302,7 +315,6 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-
     }
 
     private void pickFromCamera() {
@@ -316,17 +328,6 @@ public class RegisterFragment extends Fragment {
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
 
     }
-
-    private boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(getActivity(), storagePermissions, STORAGE_REQUEST_CODE);
-    }
-
 
     private boolean checkCameraPermission() {
         boolean result = ContextCompat.checkSelfPermission(getActivity(),
@@ -350,77 +351,67 @@ public class RegisterFragment extends Fragment {
         return result;
     }
 
-    private void getUserLocation() {
-        final LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setInterval(3000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
-                if (locationResult != null && locationResult.getLocations().size() > 0) {
-                    int latestLocationIndex = locationResult.getLocations().size() - 1;
-                    double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                    double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-
-                    Location location = new Location("providerNA");
-                    location.setLatitude(latitude);
-                    location.setLongitude(longitude);
-                    fetchAddressFromLatLong(location);
-                }
-            }
-        }, Looper.getMainLooper());
-    }
-
-    private void fetchAddressFromLatLong(Location location) {
-        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        startService(intent);
-
-    }
-
-
     private void checkUserStatus() {
-        Log.d(TAG, "checkUserStatus: Starts");
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             email = currentUser.getEmail();
             uid = currentUser.getUid();
 
         } else {
-            startActivity(new Intent(getActivity(), RegisterUserActivity.class));  //change this to NewUserActivity
+            startActivity(new Intent(getActivity(), RegisterUserActivity.class));
             getActivity().finish();
 
         }
-
-        Log.d(TAG, "checkUserStatus: Ends");
     }
 
-    private class AddressResultReceiver extends ResultReceiver {
-        AddressResultReceiver(Handler handler) {
-            super(handler);
+    private void getUserLocation() {
+        Toast.makeText(getActivity(), "Please Wait...", Toast.LENGTH_LONG).show();
 
-        }
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, this);
+    }
 
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                complaintAddress.setText(resultData.getString(Constants.RESULT_DATA_KEY));
-                complaintAddress.setVisibility(View.VISIBLE);
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
-            }else{
-                Toast.makeText(getActivity(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
-            }
+        findAddress();
+
+    }
+
+    private void findAddress() {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        try{
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+            String address = addresses.get(0).getAddressLine(0);
+
+            addressLocation.setText(address);
+
+        }catch (Exception e){
+            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
     }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(getActivity(), "Please Enable Location...", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -454,7 +445,6 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
             case CAMERA_REQUEST_CODE: {
@@ -465,14 +455,13 @@ public class RegisterFragment extends Fragment {
                         pickFromCamera();
 
                     } else {
-                        Toast.makeText(getActivity(), "Camera Permission are Required", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Camera Permission is Necessary...", Toast.LENGTH_SHORT).show();
 
                     }
 
                 } else {
 
                 }
-
             }
             break;
 
@@ -484,20 +473,19 @@ public class RegisterFragment extends Fragment {
                         getUserLocation();
 
                     } else {
-                        Toast.makeText(getActivity(), "Location Permission are Required", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Location Permission are Necessary...", Toast.LENGTH_SHORT).show();
 
                     }
 
                 } else {
 
                 }
-
             }
             break;
-
         }
-    }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -509,4 +497,5 @@ public class RegisterFragment extends Fragment {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

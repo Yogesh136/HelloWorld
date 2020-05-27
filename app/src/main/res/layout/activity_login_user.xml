@@ -20,8 +20,11 @@
             android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableRight="@drawable/mail_icon"
+            android:drawablePadding="5dp"
             android:hint="Enter Email ID"
-            android:padding="16dp" />
+            android:padding="10dp"
+            android:drawableEnd="@drawable/mail_icon" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -39,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:padding="16dp" />
+            android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -60,7 +63,7 @@
         android:id="@+id/registerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:text="New User? Create Account"
         android:textColor="@color/design_default_color_primary_variant"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
