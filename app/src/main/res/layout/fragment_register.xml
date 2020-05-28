@@ -12,32 +12,10 @@
         android:gravity="center|top">
 
 
-        <TextView
-            android:id="@+id/complaintNumberTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center|top"
-            android:text="Complaint Number"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlack"
-            android:layout_marginTop="25dp"/>
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/departmentSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/complaintNumberTextView"
-            tools:visibility="visible"
-            android:padding="10dp"
-            android:layout_margin="16dp"/>
-
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/departmentSpinner"
             android:layout_margin="16dp"
             android:padding="10dp"
             android:hint="Full Name"
@@ -66,12 +44,31 @@
             android:inputType="number"
             android:drawableStart="@drawable/phone_icon" />
 
+        <TextView
+            android:id="@+id/departmentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/numberEditText"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/editextstyle"
+            android:drawableStart="@drawable/department_icon"
+            android:drawableLeft="@drawable/department_icon"
+            android:drawableEnd="@drawable/down_icon"
+            android:drawableRight="@drawable/down_icon"
+            android:drawablePadding="5dp"
+            android:hint="Select Department"
+            android:padding="10dp" />
+
+
         <Button
             android:id="@+id/cameraButton"
             style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/numberEditText"
+            android:layout_below="@+id/departmentTextView"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"

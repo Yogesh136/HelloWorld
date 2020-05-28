@@ -65,11 +65,8 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void checkUserStatus() {
-
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-
 
         } else {
             startActivity(new Intent(getActivity(), RegisterUserActivity.class));  //change this to NewUserActivity

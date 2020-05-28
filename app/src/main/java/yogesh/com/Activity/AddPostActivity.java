@@ -248,7 +248,6 @@ public class AddPostActivity extends AppCompatActivity {
 
     }
 
-
     private void upDateWithNowImage(final String title, final String description, final String editPostId) {
         String timeStamp = String.valueOf(System.currentTimeMillis());
         String filePathAndName = "Posts/" + "post_" + timeStamp;
@@ -371,7 +370,6 @@ public class AddPostActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void loadPostData(final String editPostId) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
@@ -623,7 +621,6 @@ public class AddPostActivity extends AppCompatActivity {
 
     }
 
-
     private void pickFromCamera() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.Images.Media.TITLE, "Temp Pick");
@@ -658,7 +655,6 @@ public class AddPostActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -683,7 +679,6 @@ public class AddPostActivity extends AppCompatActivity {
         }
 
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

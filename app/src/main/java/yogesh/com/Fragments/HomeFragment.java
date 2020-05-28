@@ -89,8 +89,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadPosts() {
-        Log.d(TAG, "loadPosts: Starts");
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,7 +106,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });

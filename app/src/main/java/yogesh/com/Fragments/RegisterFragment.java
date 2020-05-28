@@ -73,6 +73,7 @@ import java.util.Locale;
 
 import yogesh.com.Activity.RegisterUserActivity;
 import yogesh.com.Activity.SettingsActivity;
+import yogesh.com.GovtDepartments;
 import yogesh.com.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -93,24 +94,21 @@ public class RegisterFragment extends Fragment implements LocationListener {
     private String[] storagePermissions;
     private String[] locationPermissions;
     private FirebaseAuth mAuth;
-    private DatabaseReference userDatabaseRef;
-    private String names, email, uid, dp;
+    private String email, uid;
 
     private LocationManager locationManager;
 
-    private double latitude = 0.0, longitude= 0.0;
+    private double latitude = 0.0, longitude = 0.0;
 
 
-    private TextView complaintNumber;
     private EditText fullname, mobileNumber, description, addressLocation;
+    private TextView departments;
     private ImageView capturedImage;
     private Button addImageButton, registerButton;
     private Switch locationSwitch;
-    private Spinner departmentSpinner;
     private ProgressDialog mProgressDialog;
 
     private Uri image_uri = null;
-
 
 
     public RegisterFragment() {
@@ -120,7 +118,6 @@ public class RegisterFragment extends Fragment implements LocationListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: Starts");
         // Inflate the layout for this fragment
 
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -132,26 +129,7 @@ public class RegisterFragment extends Fragment implements LocationListener {
         mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        userDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDatabaseRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    names = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        complaintNumber = view.findViewById(R.id.complaintNumberTextView);
         fullname = view.findViewById(R.id.nameEditText);
         mobileNumber = view.findViewById(R.id.numberEditText);
         description = view.findViewById(R.id.complaintDescriptionEditText);
@@ -160,6 +138,7 @@ public class RegisterFragment extends Fragment implements LocationListener {
         registerButton = view.findViewById(R.id.registerbutton);
         locationSwitch = view.findViewById(R.id.locationSwitch);
         addressLocation = view.findViewById(R.id.addressEditText);
+        departments = view.findViewById(R.id.departmentTextView);
 
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
@@ -188,12 +167,21 @@ public class RegisterFragment extends Fragment implements LocationListener {
             }
         });
 
+        departments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                departmentDialog();
+
+            }
+        });
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String name = fullname.getText().toString().trim();
                 final String number = mobileNumber.getText().toString().trim();
                 final String address = addressLocation.getText().toString().trim();
+                final String govtDepartment = departments.getText().toString().trim();
                 final String desc = description.getText().toString().trim();
 
                 if (TextUtils.isEmpty(name)) {
@@ -206,19 +194,32 @@ public class RegisterFragment extends Fragment implements LocationListener {
                     return;
 
                 }
-                if(latitude==0.0 || longitude==0.0){
-                    Toast.makeText(getActivity(), "Please enable GPS to detect Location...", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(govtDepartment)) {
+                    Toast.makeText(getActivity(), "Select Govt Department...", Toast.LENGTH_SHORT).show();
+                    return;
+
                 }
+                if (latitude == 0.0 || longitude == 0.0) {
+                    Toast.makeText(getActivity(), "Please enable GPS to detect Location...", Toast.LENGTH_SHORT).show();
+                    return;
 
+                }
+                if(!locationSwitch.isChecked()){
+                    Toast.makeText(getActivity(), "Enable Location Switch.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(image_uri == null){
+                    Toast.makeText(getActivity(), "Image is Required...", Toast.LENGTH_SHORT).show();
+                    return;
 
-                if (image_uri != null && locationSwitch.isChecked()) {
+                }else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
                     builder.setTitle("Register Complaint");
                     builder.setMessage("The above details provided by me is correct and can be used for further contacting regarding the issue...");
                     builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            uploadData(name, number, desc, address, String.valueOf(image_uri));
+                            uploadData(name, number, desc, address, govtDepartment, String.valueOf(image_uri));
                         }
                     });
 
@@ -230,20 +231,28 @@ public class RegisterFragment extends Fragment implements LocationListener {
                     });
 
                     builder.create().show();
-
-                } else {
-                    Toast.makeText(getActivity(), "Image and Location is Necessary...", Toast.LENGTH_SHORT).show();
-
+                }
+//                    uploadData(name, number, desc, address, govtDepartment, String.valueOf(image_uri));
                 }
 
-            }
         });
 
         return view;
     }
 
+    private void departmentDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Select Govt Department").setItems(GovtDepartments.govtDepartmentNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String department = GovtDepartments.govtDepartmentNames[which];
+                departments.setText(department);
+            }
+        }).show();
 
-    private void uploadData(final String name, final String number, final String desc,final String address, String valueOf) {
+    }
+
+    private void uploadData(final String name, final String number, final String desc, final String address, final String govtDepartment, String valueOf) {
         mProgressDialog.setMessage("Registering Complaint...");
         mProgressDialog.show();
 
@@ -267,31 +276,32 @@ public class RegisterFragment extends Fragment implements LocationListener {
 
                         if (uriTask.isSuccessful()) {
                             HashMap<Object, String> hashMap = new HashMap<>();
-                            hashMap.put("uid", uid);
-                            hashMap.put("userName", names);
-                            hashMap.put("userEmail", email);
-                            hashMap.put("userDp", dp);
-                            hashMap.put("complaintId", timestamp);
-                            hashMap.put("cFullName", name);
-                            hashMap.put("cPhoneNumber", number);
-                            hashMap.put("complaintImage", downloadUri);
-                            hashMap.put("complaintDesc", desc);
-                            hashMap.put("compliantTime", timestamp);
-                            hashMap.put("latitude", ""+latitude);
-                            hashMap.put("longitude", ""+longitude);
-                            hashMap.put("ComplaintAddress",""+address);
+                            hashMap.put("complaintId",""+ timestamp);
+                            hashMap.put("uid",""+ uid);
+                            hashMap.put("fullName", ""+ name);
+                            hashMap.put("phoneNumber", ""+ number);
+                            hashMap.put("govtDepartment", ""+ govtDepartment);
+                            hashMap.put("complaintImage", ""+ downloadUri);
+                            hashMap.put("complaintDesc", ""+ desc);
+                            hashMap.put("compliantTime", ""+ timestamp);
+                            hashMap.put("latitude", "" + latitude);
+                            hashMap.put("longitude", "" + longitude);
+                            hashMap.put("complaintAddress", "" + address);
+                            hashMap.put("Status","In Progress");
 
 
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Complaints");
-                            ref.child(timestamp).setValue(hashMap)
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                            ref.child(mAuth.getUid()).child("Complaints").child(timestamp).setValue(hashMap)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             mProgressDialog.dismiss();
-                                            Toast.makeText(getActivity(), "Complaint Registered", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Complaint has been Registered Successfully...", Toast.LENGTH_SHORT).show();
                                             fullname.setText("");
                                             mobileNumber.setText("");
+                                            departments.setText("");
                                             description.setText("");
+                                            addressLocation.setText("");
                                             capturedImage.setImageURI(null);
                                             image_uri = null;
 
@@ -367,8 +377,8 @@ public class RegisterFragment extends Fragment implements LocationListener {
     private void getUserLocation() {
         Toast.makeText(getActivity(), "Please Wait...", Toast.LENGTH_LONG).show();
 
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, this);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     @Override
@@ -385,15 +395,15 @@ public class RegisterFragment extends Fragment implements LocationListener {
         List<Address> addresses;
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
-        try{
+        try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
             String address = addresses.get(0).getAddressLine(0);
 
             addressLocation.setText(address);
 
-        }catch (Exception e){
-            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -484,7 +494,6 @@ public class RegisterFragment extends Fragment implements LocationListener {
             break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
     }
 
     @Override
@@ -494,8 +503,6 @@ public class RegisterFragment extends Fragment implements LocationListener {
                 capturedImage.setImageURI(image_uri);
             }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }
