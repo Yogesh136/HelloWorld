@@ -11,38 +11,37 @@
         android:layout_height="wrap_content"
         android:gravity="center|top">
 
-
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:padding="10dp"
-            android:hint="Full Name"
-            android:drawableLeft="@drawable/person_icon"
-            android:drawablePadding="5dp"
-            android:background="@drawable/editextstyle"
-            android:inputType="textPersonName|textCapWords"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
-            android:drawableStart="@drawable/person_icon" />
+            android:background="@drawable/editextstyle"
+            android:drawableStart="@drawable/person_icon"
+            android:drawableLeft="@drawable/person_icon"
+            android:drawablePadding="5dp"
+            android:hint="Full Name"
+            android:inputType="textPersonName|textCapWords"
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/numberEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nameEditText"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginEnd="16dp"
-            android:padding="10dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/editextstyle"
+            android:drawableStart="@drawable/phone_icon"
             android:drawableLeft="@drawable/phone_icon"
             android:drawablePadding="5dp"
             android:hint="Phone Number"
-            android:background="@drawable/editextstyle"
             android:inputType="number"
-            android:drawableStart="@drawable/phone_icon" />
+            android:padding="10dp" />
 
         <TextView
             android:id="@+id/departmentTextView"
@@ -62,7 +61,6 @@
             android:hint="Select Department"
             android:padding="10dp" />
 
-
         <Button
             android:id="@+id/cameraButton"
             style="@android:style/Widget.Material.Button.Colored"
@@ -72,12 +70,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/camera_icon"
             android:drawableLeft="@drawable/camera_icon"
             android:drawablePadding="5dp"
-            android:text="ADD IMAGE +"
             android:padding="10dp"
-            android:textColor="@color/colorWhite"
-            android:drawableStart="@drawable/camera_icon" />
+            android:text="ADD IMAGE +"
+            android:textColor="@color/colorWhite" />
 
         <ImageView
             android:id="@+id/capturedImageView"
@@ -85,8 +83,8 @@
             android:layout_height="300dp"
             android:layout_below="@+id/cameraButton"
             android:layout_marginTop="16dp"
-            android:scaleType="fitXY"
             android:background="@drawable/post_default_image"
+            android:scaleType="fitXY"
             tools:ignore="VectorDrawableCompat" />
 
         <Switch
@@ -94,72 +92,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capturedImageView"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enable Location"
-            android:layout_marginTop="19dp"
-            android:layout_toRightOf="@+id/locationSwitch"
-            android:layout_below="@+id/capturedImageView"
-            android:layout_toEndOf="@+id/locationSwitch" />
+            android:layout_marginTop="16dp"
+            android:text="Enable Location" />
 
         <EditText
             android:id="@+id/addressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView"
-            android:hint="Complete Address"
+            android:layout_below="@id/locationSwitch"
             android:layout_margin="16dp"
-            android:padding="10dp"
+            android:background="@drawable/editextstyle"
             android:drawableLeft="@drawable/location_icon"
             android:drawablePadding="5dp"
+            android:hint="Complete Address"
             android:inputType="textPostalAddress|textMultiLine"
-            android:background="@drawable/editextstyle" />
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/complaintDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/addressEditText"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:padding="10dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/editextstyle"
+            android:gravity="start"
+            android:hint="Enter Description(optional)..."
             android:inputType="textCapSentences|textMultiLine"
             android:minHeight="150dp"
-            android:gravity="start"
-            android:background="@drawable/editextstyle"
-            android:hint="Enter Description(optional)..."
-            android:layout_marginRight="16dp" />
+            android:padding="10dp" />
 
-
-        <LinearLayout
-            android:layout_below="@+id/complaintDescriptionEditText"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/registerbutton"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/complaintDescriptionEditText"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/registerbutton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_border"
-                android:text="Register"
-                android:textColor="@color/colorWhite" />
-
-        </LinearLayout>
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_border"
+            android:text="Register"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 
-    </ScrollView>
+</ScrollView>

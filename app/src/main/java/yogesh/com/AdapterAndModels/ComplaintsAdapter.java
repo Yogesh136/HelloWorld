@@ -42,7 +42,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Ho
 
     @Override
     public void onBindViewHolder(@NonNull HolderComplaints holder, int position) {
-       final ModelsComplaintList modelsComplaintList = complaintList.get(position);
+        final ModelsComplaintList modelsComplaintList = complaintList.get(position);
         String id = modelsComplaintList.getComplaintId();
         String uid = modelsComplaintList.getUid();
         String fullname = modelsComplaintList.getFullName();

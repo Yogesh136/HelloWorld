@@ -1,54 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardUseCompatPadding="true"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
+    app:cardUseCompatPadding="true"
     app:contentPadding="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/IDTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Complaint ID"
-                android:textSize="16sp"
-                android:textColor="@android:color/holo_red_dark"/>
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/departmentTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Govt Department"
+                android:text="Government Department Of Bangalore"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"/>
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/timeTextView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="29/09/1998"
+                    android:textColor="@color/colorGrey" />
 
+                <TextView
+                    android:id="@+id/statusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="Status"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorPrimary" />
 
+            </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

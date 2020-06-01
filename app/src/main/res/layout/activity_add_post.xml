@@ -5,46 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.AddPostActivity">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/postTitleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/editextstyle"
             android:hint="Enter Title..."
-            android:singleLine="true"  />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/postImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/post_default_image"
-            android:minHeight="300dp" />
+            android:minHeight="350dp"
+            android:scaleType="fitXY" />
 
         <EditText
             android:id="@+id/postDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/editextstyle"
+            android:gravity="start"
+            android:hint="Enter Description..."
             android:inputType="textCapSentences|textMultiLine"
             android:minHeight="120dp"
-            android:gravity="start"
-            android:background="@drawable/editextstyle"
-            android:hint="Enter Description..." />
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/postUploadButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="Upload" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Upload"
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 

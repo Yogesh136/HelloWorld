@@ -7,9 +7,9 @@
     tools:context=".Activity.PostDetailsActivity">
 
     <androidx.core.widget.NestedScrollView
-        android:layout_above="@+id/commentsLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/commentsLayout">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -19,11 +19,11 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="3dp"
                 app:cardElevation="3dp"
-                app:contentPadding="5dp"
                 app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@android:color/white">
+                app:contentPadding="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -34,21 +34,21 @@
                         android:id="@+id/profileLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <com.blogspot.atifsoftwares.circularimageview.CircularImageView
                             android:id="@+id/userPicImageView"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_image"
                             android:layout_width="50dp"
-                            android:layout_height="50dp" />
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_image" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/userNameTextView"
@@ -57,11 +57,12 @@
                                 android:text="Name"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="20sp" />
+
                             <TextView
                                 android:id="@+id/postTimeTextView"
-                                android:text="33 min"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:text="33 min" />
 
                         </LinearLayout>
 
@@ -70,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@null"
-                            android:src="@drawable/ic_more_black"/>
+                            android:src="@drawable/ic_more_black" />
 
                     </LinearLayout>
 
@@ -78,23 +79,25 @@
                         android:id="@+id/postTitleTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold"
+                        android:autoLink="all"
                         android:text="Title"
-                        android:autoLink="all"/>
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/postDescriptionTextView"
-                        android:text="The Description of the Post is"
-                        android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:autoLink="all"/>
+                        android:autoLink="all"
+                        android:text="The Description of the Post is"
+                        android:textColor="@color/colorBlack" />
+
                     <ImageView
                         android:id="@+id/postImageView"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:background="#FFFF"/>
+                        android:background="@color/colorWhite" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -103,21 +106,21 @@
 
                         <TextView
                             android:id="@+id/postLikesTextView"
-                            android:text="1K likes"
-                            android:layout_weight="1"
-                            android:textColor="@color/colorPrimary"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="1K likes"
+                            android:textColor="@color/colorPrimary" />
 
                         <TextView
                             android:id="@+id/postCommentsTextView"
-                            android:text="1K Comments"
-                            android:layout_weight="1"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/colorPrimary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="end" />
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="1K Comments"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorPrimary" />
 
                     </LinearLayout>
 
@@ -130,30 +133,30 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/likeButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Like"
+                            android:background="@null"
+                            android:drawableStart="@drawable/like_icon"
                             android:drawableLeft="@drawable/like_icon"
                             android:drawablePadding="5dp"
-                            android:background="@null"
-                            android:drawableStart="@drawable/like_icon" />
+                            android:text="Like" />
 
                         <Button
                             android:id="@+id/shareButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Share"
+                            android:background="@null"
+                            android:drawableStart="@drawable/share_icon"
                             android:drawableLeft="@drawable/share_icon"
                             android:drawablePadding="5dp"
-                            android:background="@null"
-                            android:drawableStart="@drawable/share_icon" />
+                            android:text="Share" />
 
                     </LinearLayout>
 
@@ -161,17 +164,17 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-            
+
             <TextView
-                android:text="Comments"
-                android:drawableLeft="@drawable/comment_icon"
-                android:padding="2dp"
-                android:drawablePadding="5dp"
-                android:textColor="#000000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/comment_icon" />
-            
+                android:drawableStart="@drawable/comment_icon"
+                android:drawableLeft="@drawable/comment_icon"
+                android:drawablePadding="5dp"
+                android:padding="2dp"
+                android:text="Comments"
+                android:textColor="#000000" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
@@ -185,38 +188,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-        
+
         <com.blogspot.atifsoftwares.circularimageview.CircularImageView
             android:id="@+id/commentProfileImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/default_image"/>
+            android:src="@drawable/default_image" />
 
         <EditText
             android:id="@+id/commentEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/commentProfileImageView"
-            android:layout_toStartOf="@id/sendButton"
-            android:background="#FFFF"
-            android:padding="10dp"
-            android:hint="Post Comment..."
-            android:inputType="textCapSentences|textMultiLine"
             android:layout_centerVertical="true"
             android:layout_margin="1dp"
+            android:layout_toStartOf="@id/sendButton"
+            android:layout_toLeftOf="@id/sendButton"
+            android:layout_toEndOf="@id/commentProfileImageView"
             android:layout_toRightOf="@id/commentProfileImageView"
-            android:layout_toLeftOf="@id/sendButton" />
-        
+            android:background="@color/colorWhite"
+            android:hint="Post Comment..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="10dp" />
+
         <ImageButton
             android:id="@+id/sendButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/send_button"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@null"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true" />
-        
+            android:src="@drawable/send_button" />
+
     </RelativeLayout>
 
 </RelativeLayout>

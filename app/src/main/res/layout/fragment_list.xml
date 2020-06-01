@@ -13,8 +13,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        tools:listitem="@layout/row_complaint_list"/>
+        android:layout_marginRight="5dp"
+        tools:listitem="@layout/row_complaint_list" />
 
 </RelativeLayout>

@@ -148,7 +148,6 @@ public class OthersProfileActivity extends AppCompatActivity {
         });
     }
 
-
     private void searchHisPosts(final String searchQuery) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(OthersProfileActivity.this);
         layoutManager.setStackFromEnd(true);

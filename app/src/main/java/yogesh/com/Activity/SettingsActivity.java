@@ -66,7 +66,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

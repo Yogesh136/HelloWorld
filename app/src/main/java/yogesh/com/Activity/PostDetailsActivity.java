@@ -163,7 +163,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         });
     }
 
-
     private void addToHisnotifications(String hisUid, String pId, String notification) {
         String timestamp = "" + System.currentTimeMillis();
 
@@ -189,7 +188,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void shareTextOnly(String pTitle, String pDescription) {
         String shareBody = pTitle + "\n" + pDescription;
@@ -234,7 +232,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         }
         return uri;
     }
-
 
     private void loadComments() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -387,7 +384,6 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void likePost() {
-
         mProcessLike = true;
         final DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
         final DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
@@ -459,7 +455,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void updateCommentCount() {
         mProcessComment = true;

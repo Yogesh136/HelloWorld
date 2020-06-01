@@ -131,7 +131,6 @@ public class LoginUserActivity extends AppCompatActivity {
         });
     }
 
-
     private void showRecoveryPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Recover Password");
@@ -169,9 +168,7 @@ public class LoginUserActivity extends AppCompatActivity {
 
     }
 
-
     private void beginRecovery(String email) {
-
         mProgressDialog.setMessage("Sending Email...");
         mProgressDialog.show();
 
@@ -197,10 +194,7 @@ public class LoginUserActivity extends AppCompatActivity {
         });
     }
 
-
     private void loginUser(String email, String password) {
-        Log.d(TAG, "loginUser: Starts");
-
         mProgressDialog.setMessage("Logging In...");
         mProgressDialog.show();
 
@@ -232,16 +226,13 @@ public class LoginUserActivity extends AppCompatActivity {
             }
         });
 
-        Log.d(TAG, "loginUser: Ends");
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -264,9 +255,7 @@ public class LoginUserActivity extends AppCompatActivity {
         }
     }
 
-
     private void firebaseAuthWithGoogle(String idToken) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -274,7 +263,6 @@ public class LoginUserActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
@@ -302,7 +290,6 @@ public class LoginUserActivity extends AppCompatActivity {
 //                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginUserActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }
@@ -315,4 +302,5 @@ public class LoginUserActivity extends AppCompatActivity {
             }
         });
     }
+
 }
